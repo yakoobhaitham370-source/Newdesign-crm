@@ -1,0 +1,26 @@
+# ============================================================================
+# MASAR Care — Supabase Edge Functions Gateway Configuration (Review Only)
+# Target Project: bkidngfzsubmyunacnju (Stage 2B.2B deployment gated)
+# Reference:
+#   - https://supabase.com/docs/guides/functions/auth-headers
+#   - https://supabase.com/docs/guides/functions/cors
+# ============================================================================
+
+# 1. bootstrap-first-owner (One-time setup; MUST be deleted immediately after bootstrap)
+# Gateway JWT verification is disabled because this CLI/operator-only function
+# verifies TWO dedicated platform secrets inside the handler using constant-time
+# SHA-256 comparison (`X-Masar-Bootstrap-Token` + `Authorization: Bearer <MASAR_PLATFORM_ADMIN_TOKEN>`).
+[functions.bootstrap-first-owner]
+verify_jwt = false
+
+# 2. owner-provision-staff (Browser-callable by active pharmacy_owner from CRM)
+# Gateway `verify_jwt = false` ensures anonymous browser CORS `OPTIONS` preflight
+# reaches our strict `MASAR_CORS_ALLOWED_ORIGINS` allowlist handler and supports
+# modern Supabase Auth signing keys without gateway-level JWT parsing mismatch.
+# Authorization is NEVER bypassed: EVERY non-OPTIONS request MUST pass live
+# `adminClient.auth.getUser(jwt)` verification AND an authoritative active
+# `pharmacy_owner` lookup in `public.pharmacy_staff` + `public.pharmacies`.
+# Runtime CORS + preflight behavior through the live Supabase Edge gateway
+# MUST be verified after Stage 2B.2B deployment.
+[functions.owner-provision-staff]
+verify_jwt = false

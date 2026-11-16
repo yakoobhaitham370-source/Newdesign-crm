@@ -1,0 +1,6 @@
+{
+  "name": "MASAR Care",
+  "description": "Chronic Patient Management and Medication Adherence Platform for Community Pharmacies",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
